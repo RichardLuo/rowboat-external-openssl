@@ -67,7 +67,8 @@ local_additional_dependencies := $(LOCAL_PATH)/android-config.mk $(LOCAL_PATH)/A
 
 include $(CLEAR_VARS)
 LOCAL_MODULE:= openssl
-LOCAL_MODULE_TAGS := optional
+LOCAL_PRELINK_MODULE := false
+LOCAL_MODULE_TAGS := eng
 LOCAL_SRC_FILES := $(local_src_files)
 LOCAL_SHARED_LIBRARIES := $(local_shared_libraries)
 LOCAL_C_INCLUDES := $(local_c_includes)

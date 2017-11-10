@@ -172,6 +172,7 @@ local_src_files := \
  crypto/bn/bn_const.c \
  crypto/bn/bn_ctx.c \
  crypto/bn/bn_div.c \
+ crypto/bn/bn_depr.c \
  crypto/bn/bn_err.c \
  crypto/bn/bn_exp.c \
  crypto/bn/bn_exp2.c \

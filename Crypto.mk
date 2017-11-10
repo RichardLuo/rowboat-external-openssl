@@ -1,6 +1,6 @@
 arm_cflags := -DOPENSSL_BN_ASM_GF2m -DOPENSSL_BN_ASM_MONT -DGHASH_ASM -DAES_ASM -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM
 mips_cflags := -DOPENSSL_BN_ASM_MONT -DAES_ASM -DSHA1_ASM -DSHA256_ASM
-x86_cflags := -DOPENSSL_BN_ASM_GF2m -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_PART_WORDS -DAES_ASM -DGHASH_ASM -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM -DMD5_ASM -DDES_PTR -DDES_RISC1 -DDES_UNROLL
+x86_cflags := -DDES_PTR -DDES_RISC1 -DDES_UNROLL
 
 arm_src_files := \
  crypto/aes/asm/aes-armv4.s \
@@ -20,7 +20,10 @@ mips_src_files := \
  crypto/sha/asm/sha256-mips.s
 
 x86_src_files := \
- crypto/aes/asm/aes-586.s \
+ crypto/aes/aes_core.c \
+ crypto/bn/bn_asm.c \
+ crypto/rc4/asm/rc4-md5-x86_64.s
+ #crypto/aes/asm/aes-586.s \
  crypto/aes/asm/vpaes-x86.s \
  crypto/aes/asm/aesni-x86.s \
  crypto/bn/asm/bn-586.s \
@@ -37,7 +40,7 @@ x86_src_files := \
  crypto/bf/asm/bf-586.s
 
 x86_exclude_files := \
- crypto/aes/aes_cbc.c \
+ #crypto/aes/aes_cbc.c \
  crypto/des/des_enc.c \
  crypto/des/fcrypt_b.c \
  crypto/bf/bf_enc.c
@@ -613,6 +616,9 @@ ifeq ($(TARGET_ARCH),arm)
 LOCAL_SDK_VERSION := 9
 # Use the NDK prebuilt libdl.
 LOCAL_LDFLAGS += -ldl
+else ifeq ($(TARGET_SIMULATOR),true)
+LOCAL_LDFLAGS += -ldl
+LOCAL_LDLIBS += -ldl
 else
 LOCAL_SHARED_LIBRARIES += libdl
 endif

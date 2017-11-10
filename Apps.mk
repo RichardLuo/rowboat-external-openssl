@@ -54,7 +54,7 @@ local_src_files:= \
 	apps/x509.c
 
 local_shared_libraries := \
-	libopenssl \
+	libssl \
 	libcrypto
 
 local_c_includes := \

@@ -66,7 +66,7 @@ LOCAL_SRC_FILES += $(local_src_files)
 LOCAL_C_INCLUDES += $(local_c_includes)
 LOCAL_SHARED_LIBRARIES += libcrypto $(log_shared_libraries)
 LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE:= libopenssl
+LOCAL_MODULE:= libssl
 LOCAL_ADDITIONAL_DEPENDENCIES := $(local_additional_dependencies)
 include $(BUILD_SHARED_LIBRARY)
 
@@ -78,6 +78,6 @@ LOCAL_SRC_FILES += $(local_src_files)
 LOCAL_C_INCLUDES += $(local_c_includes)
 LOCAL_SHARED_LIBRARIES += libcrypto $(log_shared_libraries)
 LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE:= libopenssl
+LOCAL_MODULE:= libssl
 LOCAL_ADDITIONAL_DEPENDENCIES := $(local_additional_dependencies)
 include $(BUILD_HOST_SHARED_LIBRARY)

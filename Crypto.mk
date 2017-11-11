@@ -1,6 +1,7 @@
 arm_cflags := -DOPENSSL_BN_ASM_GF2m -DOPENSSL_BN_ASM_MONT -DGHASH_ASM -DAES_ASM -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM
 mips_cflags := -DOPENSSL_BN_ASM_MONT -DAES_ASM -DSHA1_ASM -DSHA256_ASM
-x86_cflags := -DDES_PTR -DDES_RISC1 -DDES_UNROLL
+x64_cflags := -DDES_PTR -DDES_RISC1 -DDES_UNROLL
+x86_cflags := -DOPENSSL_BN_ASM_GF2m -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_PART_WORDS -DAES_ASM -DGHASH_ASM -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM -DMD5_ASM -DDES_PTR -DDES_RISC1 -DDES_UNROLL
 
 arm_src_files := \
  crypto/aes/asm/aes-armv4.s \
@@ -19,11 +20,13 @@ mips_src_files := \
  crypto/sha/asm/sha1-mips.s \
  crypto/sha/asm/sha256-mips.s
 
-x86_src_files := \
+x64_src_files := \
  crypto/aes/aes_core.c \
  crypto/bn/bn_asm.c \
  crypto/rc4/asm/rc4-md5-x86_64.s
- #crypto/aes/asm/aes-586.s \
+
+x86_src_files := \
+ crypto/aes/asm/aes-586.s \
  crypto/aes/asm/vpaes-x86.s \
  crypto/aes/asm/aesni-x86.s \
  crypto/bn/asm/bn-586.s \
@@ -39,8 +42,10 @@ x86_src_files := \
  crypto/des/asm/crypt586.s \
  crypto/bf/asm/bf-586.s
 
+x64_exclude_files :=
+
 x86_exclude_files := \
- #crypto/aes/aes_cbc.c \
+ crypto/aes/aes_cbc.c \
  crypto/des/des_enc.c \
  crypto/des/fcrypt_b.c \
  crypto/bf/bf_enc.c
@@ -596,9 +601,15 @@ ifeq ($(TARGET_ARCH),mips)
   endif
 endif
 ifeq ($(TARGET_ARCH),x86)
+ifneq ($(TARGET_SIMULATOR),true)
   LOCAL_SRC_FILES += $(x86_src_files)
   LOCAL_SRC_FILES := $(filter-out $(x86_exclude_files),$(LOCAL_SRC_FILES))
   LOCAL_CFLAGS += $(x86_cflags)
+else
+  LOCAL_SRC_FILES += $(x64_src_files)
+  LOCAL_SRC_FILES := $(filter-out $(x64_exclude_files),$(LOCAL_SRC_FILES))
+  LOCAL_CFLAGS += $(x64_cflags)
+endif
 endif
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE:= libcrypto_static
@@ -640,9 +651,15 @@ ifeq ($(TARGET_ARCH),mips)
   endif
 endif
 ifeq ($(TARGET_ARCH),x86)
+ifneq ($(TARGET_SIMULATOR),true)
   LOCAL_SRC_FILES += $(x86_src_files)
   LOCAL_SRC_FILES := $(filter-out $(x86_exclude_files),$(LOCAL_SRC_FILES))
   LOCAL_CFLAGS += $(x86_cflags)
+else
+  LOCAL_SRC_FILES += $(x64_src_files)
+  LOCAL_SRC_FILES := $(filter-out $(x64_exclude_files),$(LOCAL_SRC_FILES))
+  LOCAL_CFLAGS += $(x64_cflags)
+endif
 endif
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE:= libcrypto
@@ -656,9 +673,15 @@ include $(LOCAL_PATH)/android-config.mk
 LOCAL_SHARED_LIBRARIES := $(log_shared_libraries)
 LOCAL_SRC_FILES += $(local_src_files)
 ifeq ($(HOST_OS)-$(HOST_ARCH),linux-x86)
+ifneq ($(TARGET_SIMULATOR),true)
   LOCAL_SRC_FILES += $(x86_src_files)
   LOCAL_SRC_FILES := $(filter-out $(x86_exclude_files),$(LOCAL_SRC_FILES))
   LOCAL_CFLAGS += $(x86_cflags)
+else
+  LOCAL_SRC_FILES += $(x64_src_files)
+  LOCAL_SRC_FILES := $(filter-out $(x64_exclude_files),$(LOCAL_SRC_FILES))
+  LOCAL_CFLAGS += $(x64_cflags)
+endif
 else
   LOCAL_SRC_FILES += $(other_arch_src_files)
 endif
@@ -679,9 +702,15 @@ include $(LOCAL_PATH)/android-config.mk
 LOCAL_SHARED_LIBRARIES := $(log_shared_libraries)
 LOCAL_SRC_FILES += $(local_src_files)
 ifeq ($(HOST_OS)-$(HOST_ARCH),linux-x86)
+ifneq ($(TARGET_SIMULATOR),true)
   LOCAL_SRC_FILES += $(x86_src_files)
   LOCAL_SRC_FILES := $(filter-out $(x86_exclude_files),$(LOCAL_SRC_FILES))
   LOCAL_CFLAGS += $(x86_cflags)
+else
+  LOCAL_SRC_FILES += $(x64_src_files)
+  LOCAL_SRC_FILES := $(filter-out $(x64_exclude_files),$(LOCAL_SRC_FILES))
+  LOCAL_CFLAGS += $(x64_cflags)
+endif
 else
   LOCAL_SRC_FILES += $(other_arch_src_files)
 endif

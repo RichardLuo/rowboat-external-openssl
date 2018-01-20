@@ -580,10 +580,7 @@ include $(LOCAL_PATH)/android-config.mk
 
 LOCAL_SHARED_LIBRARIES := $(log_shared_libraries)
 
-ifeq ($(TARGET_ARCH),arm)
-LOCAL_SDK_VERSION := 9
-endif
-
+LOCAL_C_INCLUDES += $(TARGET_C_INCLUDES)
 LOCAL_SRC_FILES += $(local_src_files)
 LOCAL_CFLAGS += $(local_c_flags)
 LOCAL_ASFLAGS += $(local_as_flags)
@@ -623,11 +620,11 @@ include $(LOCAL_PATH)/android-config.mk
 
 LOCAL_SHARED_LIBRARIES := $(log_shared_libraries)
 
-ifeq ($(TARGET_ARCH),arm)
-LOCAL_SDK_VERSION := 9
-# Use the NDK prebuilt libdl.
-LOCAL_LDFLAGS += -ldl
-else ifeq ($(TARGET_SIMULATOR),true)
+#ifeq ($(TARGET_ARCH),arm)
+##LOCAL_SDK_VERSION := 9
+## Use the NDK prebuilt libdl.
+#LOCAL_LDFLAGS += -ldl
+ifeq ($(TARGET_SIMULATOR),true)
 LOCAL_LDFLAGS += -ldl
 LOCAL_LDLIBS += -ldl
 else
@@ -638,6 +635,7 @@ LOCAL_SRC_FILES += $(local_src_files)
 LOCAL_CFLAGS += $(local_c_flags)
 LOCAL_ASFLAGS += $(local_as_flags)
 LOCAL_C_INCLUDES += $(local_c_includes)
+LOCAL_C_INCLUDES += $(TARGET_C_INCLUDES)
 ifeq ($(TARGET_ARCH),arm)
   LOCAL_SRC_FILES += $(arm_src_files)
   LOCAL_CFLAGS += $(arm_cflags)

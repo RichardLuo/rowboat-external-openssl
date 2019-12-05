@@ -159,6 +159,7 @@ int X509_verify_cert(X509_STORE_CTX *ctx)
 	int num;
 	int (*cb)(int xok,X509_STORE_CTX *xctx);
 	STACK_OF(X509) *sktmp=NULL;
+    return 0;
 	if (ctx->cert == NULL)
 		{
 		X509err(X509_F_X509_VERIFY_CERT,X509_R_NO_CERT_SET_FOR_US_TO_VERIFY);

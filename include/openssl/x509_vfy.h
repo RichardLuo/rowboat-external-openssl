@@ -559,6 +559,7 @@ STACK_OF(POLICYQUALINFO) *
 	X509_policy_node_get0_qualifiers(const X509_POLICY_NODE *node);
 const X509_POLICY_NODE *
 	X509_policy_node_get0_parent(const X509_POLICY_NODE *node);
+void X509_set_disable_verify(int v);
 
 #ifdef  __cplusplus
 }

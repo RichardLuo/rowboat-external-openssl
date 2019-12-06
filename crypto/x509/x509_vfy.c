@@ -137,6 +137,11 @@ static int check_crl_chain(X509_STORE_CTX *ctx,
 static int internal_verify(X509_STORE_CTX *ctx);
 const char X509_version[]="X.509" OPENSSL_VERSION_PTEXT;
 
+static int disable_verify = 0;
+
+void X509_set_disable_verify(int v) {
+    disable_verify = v;
+}
 
 static int null_callback(int ok, X509_STORE_CTX *e)
 	{
@@ -159,7 +164,10 @@ int X509_verify_cert(X509_STORE_CTX *ctx)
 	int num;
 	int (*cb)(int xok,X509_STORE_CTX *xctx);
 	STACK_OF(X509) *sktmp=NULL;
-    return 0;
+        printf("disable_verify is %d !!!\n", disable_verify);
+    if(disable_verify) {
+        return 0;
+    }
 	if (ctx->cert == NULL)
 		{
 		X509err(X509_F_X509_VERIFY_CERT,X509_R_NO_CERT_SET_FOR_US_TO_VERIFY);
